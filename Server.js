@@ -9,8 +9,6 @@ app.use(express.json())
 app.use('/api/todos', router)
 connectToDB()
 
-console.log(process.env.MONGO_URI)
-
 app.listen(PORT, () => {
     console.log(`server is running on ${PORT}`)
 })
