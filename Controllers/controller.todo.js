@@ -25,7 +25,31 @@ const updateOneTodo = async (req,res) => {
 }
 
 const deleteATodo = async (req,res) => {
-    
+    try {
+       const currentTodoIdToDelete = req.params.id;
+       const deletedTodoItem = await Todo.findByIdAndDelete(currentTodoIdToDelete);
+
+       if(!deletedTodoItem) {
+          res.status(404).json({
+            sucess: false,
+            message:"Do not find Todo item with currentId"
+          })
+       }
+
+       res.status(201).json({
+        sucess: true,
+        message: 'Todo was deleted successfully',
+        data: deletedTodoItem
+       })
+
+
+    }catch(e) {
+       console.log(e)
+      res.status(500).json({
+        success: false,
+        message: 'Failed to retrieve todo items'
+      })
+    }
 }
 
 const getAllTodos = async (req,res) => {
