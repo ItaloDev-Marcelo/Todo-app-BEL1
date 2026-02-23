@@ -21,7 +21,30 @@ const addNewTodo = async (req,res) => {
 }
 
 const updateOneTodo = async (req,res) => {
-    
+    try {
+       const AllTodo = req.body;
+       const currentTodoId = req.params.id;
+       const currentTodoItemToBeUpdated = await Todo.findByIdAndUpdate(currentTodoId,AllTodo,{new: true});
+       if(!currentTodoItemToBeUpdated) {
+        res.status(404).json({
+          success: false,
+          message: 'Please try again with a valid ID'
+        })
+       }else {
+        res.status(201).json({
+        success: true,
+        message: 'Todo item updated successfully',
+        data: currentTodoItemToBeUpdated,
+       })
+       }
+
+    } catch(e) {
+        console.log(e)
+      res.status(500).json({
+        success: false,
+        message: 'Failed to update todo item'
+      })
+    } 
 }
 
 const deleteATodo = async (req,res) => {
@@ -31,13 +54,13 @@ const deleteATodo = async (req,res) => {
 
        if(!deletedTodoItem) {
           res.status(404).json({
-            sucess: false,
+            success: false,
             message:"Do not find Todo item with currentId"
           })
        }
 
        res.status(201).json({
-        sucess: true,
+        success: true,
         message: 'Todo was deleted successfully',
         data: deletedTodoItem
        })
