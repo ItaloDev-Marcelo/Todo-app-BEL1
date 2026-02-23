@@ -48,7 +48,23 @@ const getAllTodos = async (req,res) => {
 }
 
 const getOneTodo = async (req,res) => {
-
+     try {
+        const getTodoById = req.params.id;
+        const currentTodo = await Todo.findById(getTodoById);
+        if(currentTodo)  {
+          res.status(201).json({
+            sucess: true,
+            message: 'Todo item retrieved successfully',
+            data: currentTodo 
+          })
+        }
+     }catch(e) {
+      console.log(e)
+      res.status(500).json({
+        sucess: false,
+        message: 'Failed to retrieve the todo item'
+      })
+     }
 }
 
 
